@@ -1,0 +1,24 @@
+{
+	"article": {
+		"nodes": [{
+			"header": {
+				"h1": {
+					"text": "Evolution of fruit flies"
+				}
+			},
+			"article": {
+				"text": "Due to the short lifespan of fruit flies..."
+			}
+		},
+		{
+			"header": {
+				"h2": {
+					"text": "The edge of our universe"
+				}
+			},
+			"article": {
+				"text": "One ponders if there is an edge to our universe, then what is outside it? ..."
+			}
+		}]
+	}
+}
