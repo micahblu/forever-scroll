@@ -1,0 +1,25 @@
+{
+  "name": "forever-scroll",
+  "version": "0.0.1",
+  "homepage": "https://github.com/micahblu/forever-scroll",
+  "authors": [
+    "Micah Blu <micahblu@gmail.com>"
+  ],
+  "description": "A simple infinite scroller",
+  "main": "dist/forever-scroll.min.js",
+  "keywords": [
+    "infinite",
+    "scroller"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "dom-js": "~0.0.1"
+  }
+}

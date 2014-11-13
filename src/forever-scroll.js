@@ -1,5 +1,12 @@
-var fScroll = (function(){
-
+(function(root, factory){
+  if(typeof define === 'function' && define.amd) {
+    define(['dom-js'], factory);
+  } else if(typeof exports === 'object') {
+    module.exports = factory();
+  } else {
+    root.fScroll = root.fScroll || factory();
+  }
+})(this, function() {
   //var stage = options.contentEl || document.body;
   var init = function(options){
     
@@ -61,8 +68,7 @@ var fScroll = (function(){
 
     request.send(); 
   };
-
   return {
     init: init
   }
-})();
+});
