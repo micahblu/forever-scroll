@@ -20,6 +20,6 @@
     "tests"
   ],
   "devDependencies": {
-    "dom-js": "~0.0.1"
+    "dom-js": "~0.0.2"
   }
 }

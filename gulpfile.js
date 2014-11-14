@@ -1,7 +1,7 @@
 var gulp = require('gulp'),
-		connect = require('gulp-connect'),
-		rename = require('gulp-rename'),
-		uglify = require('gulp-uglify');
+    connect = require('gulp-connect'),
+    rename = require('gulp-rename'),
+    uglify = require('gulp-uglify');
 
 gulp.task('connect', function(){
 	connect.server({

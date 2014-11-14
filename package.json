@@ -21,9 +21,11 @@
     "url": "https://github.com/micahblu/forever-scroll/issues"
   },
   "devDependencies": {
+    "assert": "^1.1.2",
     "gulp": "^3.8.10",
     "gulp-connect": "^2.2.0",
     "gulp-rename": "^1.2.0",
-    "gulp-uglify": "^1.0.1"
+    "gulp-uglify": "^1.0.1",
+    "zombie": "^2.2.0"
   }
 }
