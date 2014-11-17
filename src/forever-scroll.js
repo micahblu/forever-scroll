@@ -7,7 +7,7 @@
     root.fScroll = root.fScroll || factory();
   }
 })(this, function() {
-  //var stage = options.contentEl || document.body;
+
   var init = function(options){
     
     var stage = document.body;
@@ -26,26 +26,47 @@
         top = stage.scrollTop,
         viewport = window.innerHeight,
         scrollHeight = stage.scrollHeight,
-        url = options.url || null;
+        url = options.url || null,
+        isScrollingDown = true,
+        isLoading = false,
+        preloader = Dom.create("div", {id: "fscroll-preloader", text: "Loading..."});
 
     if(!url){
       throw "URL must be set";
       return;
     }
 
+    var callCount = 0;
+
     window.addEventListener("scroll", function(){
 
+      isScrollingDown = top > stage.scrollTop ? false : true;
       top = stage.scrollTop;
       viewport = window.innerHeight;
       scrollHeight = stage.scrollHeight;
 
-      if( scrollHeight - (top + viewport) <= 300){
-        get(url, function(data){
-          var content = Dom.create("section", data);
+
+      if( scrollHeight - (top + viewport) <= 300 && isScrollingDown){
+
+        if(!isLoading) {
+          stage.appendChild(preloader);
+          isLoading = true;
+        }else{
+          return;
+        }
+
+        var callback = function(response){
+          if(status.response && status.response == "empty") return false;
+          var content = Dom.create("section", response);
+          var preloader = document.getElementById("fscroll-preloader");
+          preloader.parentNode.removeChild(preloader);
+          isLoading = false;
 
           stage.appendChild(content);
-        });
-      }
+        };
+
+        get(url, callback);
+      } 
     });
   };
 
@@ -68,6 +89,13 @@
 
     request.send(); 
   };
+
+  var mock = function(options) {
+     setTimeout(function(){
+        options.callback(options.response);
+     }, options.latency || 1000);
+  };
+
   return {
     init: init
   }

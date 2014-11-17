@@ -1,6 +1,13 @@
-var fScroll = (function(){
+(function(root, factory){
+  if(typeof define === 'function' && define.amd) {
+    define(['dom-js'], factory);
+  } else if(typeof exports === 'object') {
+    module.exports = factory();
+  } else {
+    root.fScroll = root.fScroll || factory();
+  }
+})(this, function() {
 
-  //var stage = options.contentEl || document.body;
   var init = function(options){
     
     var stage = document.body;
@@ -19,26 +26,93 @@ var fScroll = (function(){
         top = stage.scrollTop,
         viewport = window.innerHeight,
         scrollHeight = stage.scrollHeight,
-        url = options.url || null;
+        url = options.url || null,
+        isScrollingDown = true,
+        isLoading = false,
+        preloader = Dom.create("div", {id: "fscroll-preloader", text: "Loading..."});
 
     if(!url){
       throw "URL must be set";
       return;
     }
 
+    var callCount = 0;
+
     window.addEventListener("scroll", function(){
 
+      isScrollingDown = top > stage.scrollTop ? false : true;
       top = stage.scrollTop;
       viewport = window.innerHeight;
       scrollHeight = stage.scrollHeight;
 
-      if( scrollHeight - (top + viewport) <= 300){
-        get(url, function(data){
-          var content = Dom.create("section", data);
+
+      if( scrollHeight - (top + viewport) <= 300 && isScrollingDown){
+
+        if(!isLoading) {
+          stage.appendChild(preloader);
+          isLoading = true;
+        }else{
+          return;
+        }
+
+        var callback = function(response){
+          if(status.response && status.response == "empty") return false;
+          var content = Dom.create("section", response);
+          var preloader = document.getElementById("fscroll-preloader");
+          preloader.parentNode.removeChild(preloader);
+          isLoading = false;
 
           stage.appendChild(content);
-        });
-      }
+        };
+
+        get(url, callback);
+        /*
+        var mockResponse_1 = {
+          "article": {
+            "nodes": [{
+              "header": {
+                "h1": {
+                  "text": "Evolution of fruit flies"
+                }
+              },
+              "article": {
+                "text": "Due to the short lifespan of fruit flies..."
+              },
+              "br": {},
+              "hr": {}
+            },
+            {
+              "header": {
+                "h2": {
+                  "text": "The edge of our universe"
+                }
+              },
+              "article": {
+                "text": "One ponders if there is an edge to our universe, then what is outside it? ..."
+              },
+              "br": {},
+              "hr": {}
+            }]
+          }
+        };
+
+        var mockResponse_2 = {
+          "status": "empty"
+        };
+        callCount++;
+        if(callCount < 5){
+          mock({
+            response: mockResponse_1,
+            callback: callback
+          });
+        }else{
+          mock({
+            response: mockResponse_2,
+            callback: callback
+          });
+        }
+        */
+      } 
     });
   };
 
@@ -62,7 +136,13 @@ var fScroll = (function(){
     request.send(); 
   };
 
+  var mock = function(options) {
+     setTimeout(function(){
+        options.callback(options.response);
+     }, options.latency || 1000);
+  };
+
   return {
     init: init
   }
-})();
+});
